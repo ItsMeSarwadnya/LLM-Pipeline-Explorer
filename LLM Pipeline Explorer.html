@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="terracotta">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLM Pipeline Explorer — Inteallractive 3D &amp; Tokenization Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="bg-ambient" aria-hidden="true">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <header class="top-nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-name">LLM Pipeline Explorer</span>
+      </div>
+      <nav class="step-pills" aria-label="Pipeline Steps">
+        <a href="#step-1" class="step-pill"><span>01</span> Tokenization</a>
+        <a href="#step-2" class="step-pill"><span>02</span> 3D Embeddings</a>
+        <a href="#step-3" class="step-pill"><span>03</span> Similarity</a>
+        <a href="#step-4" class="step-pill"><span>04</span> Positional</a>
+        <a href="#step-5" class="step-pill"><span>05</span> Attention</a>
+      </nav>
+      <div class="theme-switcher" role="group" aria-label="Color Theme">
+        <button type="button" class="theme-btn active" data-theme-target="terracotta" title="Warm Terracotta">Terracotta</button>
+        <button type="button" class="theme-btn" data-theme-target="sage" title="Nordic Sage">Sage</button>
+        <button type="button" class="theme-btn" data-theme-target="plum" title="Sunset Plum">Plum</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-badge">Interactive Architecture Walkthrough</div>
+      <h1>LLM Pipeline Explorer</h1>
+      <p class="hero-subtitle">
+        Step-by-step interactive inspection of tokenization, vocabulary building,
+        3D semantic embeddings, positional encoding waves, and self-attention softmax generation.
+      </p>
+    </section>
+
+    <!-- ACTIVE PIPELINE STAGES BAR -->
+    <section class="pipeline-stages-bar glass-card" aria-label="Active Pipeline Stages">
+      <div class="stages-header">
+        <div class="stages-title">
+          <span class="stages-live-dot"></span>
+          <span>ACTIVE PIPELINE STAGES</span>
+        </div>
+        <div class="stages-hint">Click any stage to jump</div>
+      </div>
+      <div class="stages-grid" id="stages-grid">
+        <a href="#step-1" class="stage-card active" data-stage="step-1">
+          <div class="stage-num">STAGE 01</div>
+          <div class="stage-name">User Input</div>
+          <div class="stage-sub">Raw Text &amp; Ingestion</div>
+        </a>
+        <a href="#step-1" class="stage-card" data-stage="step-1-tok">
+          <div class="stage-num">STAGE 02</div>
+          <div class="stage-name">Tokenization</div>
+          <div class="stage-sub">Subwords &amp; Token IDs</div>
+        </a>
+        <a href="#step-2" class="stage-card" data-stage="step-2">
+          <div class="stage-num">STAGE 03</div>
+          <div class="stage-name">Embeddings</div>
+          <div class="stage-sub">Vector Space &amp; Meaning</div>
+        </a>
+        <a href="#step-4" class="stage-card" data-stage="step-4">
+          <div class="stage-num">STAGE 04</div>
+          <div class="stage-name">Positional Encoding</div>
+          <div class="stage-sub">Word Order &amp; Waves</div>
+        </a>
+        <a href="#step-5" class="stage-card" data-stage="step-5">
+          <div class="stage-num">STAGE 05</div>
+          <div class="stage-name">Attention &amp; Gen</div>
+          <div class="stage-sub">Self-Attention &amp; Softmax</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- STEP 1: Tokenization & Vocabulary -->
+    <section id="step-1" class="card glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="step-badge">STEP 01</span>
+          <h2>Tokenization &amp; Vocabulary</h2>
+        </div>
+        <div class="header-metric" id="token-stats-badge">12 tokens (62 bytes)</div>
+      </div>
+
+      <p class="card-desc">
+        LLMs cannot read raw characters directly. Text is sliced into distinct
+        <strong>tokens</strong> (words, subwords, or punctuation). Each token is
+        assigned a unique numerical ID. Notice how different tokens receive distinct colors below.
+      </p>
+
+      <div class="sample-section">
+        <div class="section-label">SELECT SAMPLE SENTENCE:</div>
+        <div class="sample-buttons" id="sample-buttons">
+          <button type="button" class="sample-btn active" data-sample="ai">
+            <span>🤖</span> Neural Networks &amp; AI
+          </button>
+          <button type="button" class="sample-btn" data-sample="space">
+            <span>🌌</span> Galaxies &amp; Astronomy
+          </button>
+          <button type="button" class="sample-btn" data-sample="food">
+            <span>🍝</span> Italian Pasta Recipe
+          </button>
+          <button type="button" class="sample-btn" data-sample="marine">
+            <span>🐋</span> Ocean Whales &amp; Marine Life
+          </button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <textarea id="token-input" rows="3" spellcheck="false"
+          placeholder="Enter any sentence to tokenize...">Large language models predict the next token based on context.</textarea>
+      </div>
+
+      <div class="action-row">
+        <button type="button" id="btn-tokenize" class="btn btn-primary">
+          Tokenize Text
+        </button>
+        <button type="button" id="btn-vocab" class="btn btn-secondary">
+          Build Vocabulary
+        </button>
+        <button type="button" id="btn-project-3d" class="btn btn-ghost">
+          Project to 3D Space →
+        </button>
+      </div>
+
+      <div class="tokens-panel">
+        <div class="tokens-panel-header">
+          <span class="tokens-panel-title">Tokens Splitted with Colors &amp; IDs:</span>
+          <span class="tokens-hint">(Hover on token to inspect)</span>
+        </div>
+        <div class="tokens-grid" id="tokens-grid"></div>
+      </div>
+
+      <div class="vocab-drawer" id="vocab-drawer" hidden>
+        <div class="vocab-drawer-header">
+          <div>
+            <h3>Generated Vocabulary Index</h3>
+            <p class="vocab-sub" id="vocab-summary">0 unique tokens indexed</p>
+          </div>
+          <button type="button" id="btn-close-vocab" class="btn-icon" aria-label="Close vocabulary">✕</button>
+        </div>
+        <div class="vocab-table-wrap">
+          <table class="vocab-table">
+            <thead>
+              <tr>
+                <th>Token ID</th>
+                <th>Token</th>
+                <th>Type</th>
+                <th>Bytes</th>
+                <th>Frequency</th>
+              </tr>
+            </thead>
+            <tbody id="vocab-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: Semantic Embeddings in 3D Space -->
+    <section id="step-2" class="card glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="step-badge">STEP 02</span>
+          <h2>Semantic Embeddings in 3D Space</h2>
+        </div>
+        <div class="header-metric metric-pill">Interactive 3D Visualizer</div>
+      </div>
+
+      <p class="card-desc">
+        Tokens and sentences are transformed into vectors (lists of numbers). In embedding space,
+        <strong>semantically similar sentences cluster together</strong>, while unrelated sentences
+        are positioned far apart. Drag to rotate in 3D and scroll to zoom.
+      </p>
+
+      <div class="visualizer-wrapper">
+        <canvas id="embedding-canvas"></canvas>
+
+        <div class="viz-overlay viz-controls-hint">
+          <div class="viz-overlay-title">3D Projection</div>
+          <ul>
+            <li>Drag mouse to rotate</li>
+            <li>Scroll to zoom in / out</li>
+            <li>Click any node to select</li>
+          </ul>
+          <div class="viz-mini-actions">
+            <button type="button" id="btn-auto-rotate" class="viz-btn">Auto-Orbit: Off</button>
+            <button type="button" id="btn-reset-view" class="viz-btn">Reset View</button>
+          </div>
+        </div>
+
+        <div class="viz-overlay viz-node-inspector" id="node-inspector" hidden>
+          <div class="inspector-top">
+            <span class="inspector-cat" id="inspector-cat">AI &amp; Computation</span>
+            <button type="button" id="btn-close-inspector" class="btn-icon-sm">✕</button>
+          </div>
+          <p class="inspector-text" id="inspector-text"></p>
+          <div class="inspector-coords" id="inspector-coords"></div>
+          <div class="inspector-actions">
+            <button type="button" id="btn-set-a" class="viz-btn">Set Sentence A</button>
+            <button type="button" id="btn-set-b" class="viz-btn">Set Sentence B</button>
+          </div>
+        </div>
+
+        <div class="viz-overlay viz-legend" id="viz-legend">
+          <div class="legend-item" data-cluster="ai">
+            <span class="legend-swatch swatch-ai"></span> AI &amp; Computation
+          </div>
+          <div class="legend-item" data-cluster="space">
+            <span class="legend-swatch swatch-space"></span> Space &amp; Astronomy
+          </div>
+          <div class="legend-item" data-cluster="food">
+            <span class="legend-swatch swatch-food"></span> Culinary &amp; Food
+          </div>
+          <div class="legend-item" data-cluster="marine">
+            <span class="legend-swatch swatch-marine"></span> Marine Biology
+          </div>
+          <div class="legend-item" data-cluster="custom">
+            <span class="legend-swatch swatch-custom"></span> Custom Inputs
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: Sentence Vector Similarity Comparison -->
+    <section id="step-3" class="card glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="step-badge">STEP 03</span>
+          <h2>Sentence Vector Similarity Comparison</h2>
+        </div>
+        <div class="header-metric metric-pill">Cosine Similarity</div>
+      </div>
+
+      <p class="card-desc">
+        Pick or write two sentences below to compute their mathematical similarity in embedding space.
+        A dashed vector line connects them directly in the 3D visualizer above.
+      </p>
+
+      <div class="compare-grid">
+        <div class="compare-col">
+          <label for="select-a" class="compare-label">
+            <span class="dot-a"></span> Sentence A:
+          </label>
+          <select id="select-a" class="select-input"></select>
+          <input type="text" id="custom-a" class="text-input" placeholder="Or type custom Sentence A..." />
+        </div>
+
+        <div class="compare-col">
+          <label for="select-b" class="compare-label">
+            <span class="dot-b"></span> Sentence B:
+          </label>
+          <select id="select-b" class="select-input"></select>
+          <input type="text" id="custom-b" class="text-input" placeholder="Or type custom Sentence B..." />
+        </div>
+      </div>
+
+      <div class="similarity-result-card">
+        <div class="sim-top-row">
+          <div>
+            <div class="sim-kicker">COSINE SIMILARITY SCORE</div>
+            <div class="sim-status">
+              <span class="sim-status-dot" id="sim-status-dot"></span>
+              <span id="sim-status-label">Very High Similarity (Same Conceptual Cluster)</span>
+            </div>
+          </div>
+          <div class="sim-score" id="sim-score">86.5%</div>
+        </div>
+
+        <div class="sim-bar-track">
+          <div class="sim-bar-fill" id="sim-bar-fill" style="width: 86.5%"></div>
+        </div>
+
+        <div class="sim-sentences">
+          <div><strong>Sentence A:</strong> <span id="sim-text-a"></span></div>
+          <div><strong>Sentence B:</strong> <span id="sim-text-b"></span></div>
+        </div>
+
+        <p class="sim-explanation" id="sim-explanation"></p>
+      </div>
+    </section>
+
+    <!-- STEP 4: Positional Encoding (Word Order & Waves) -->
+    <section id="step-4" class="card glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="step-badge">STEP 04</span>
+          <h2>Positional Encoding — Word Order &amp; Waves</h2>
+        </div>
+        <div class="header-metric metric-pill" id="pe-dims-badge">Sinusoidal PE · 16 Dims</div>
+      </div>
+
+      <p class="card-desc">
+        Transformers process all tokens in parallel, so they have no built-in sense of word order.
+        <strong>Sinusoidal positional encodings</strong> inject unique sine and cosine wave signatures
+        into every token position so the model knows where each token sits.
+      </p>
+
+      <div class="pe-controls">
+        <div class="pe-token-strip" id="pe-token-strip"></div>
+        <div class="pe-wave-legend">
+          <span><i class="pe-dot pe-dot-1"></i> dim 0 (sin)</span>
+          <span><i class="pe-dot pe-dot-2"></i> dim 1 (cos)</span>
+          <span><i class="pe-dot pe-dot-3"></i> dim 4 (sin)</span>
+          <span><i class="pe-dot pe-dot-4"></i> dim 8 (cos)</span>
+        </div>
+      </div>
+
+      <div class="pe-grid">
+        <div class="pe-panel">
+          <div class="pe-panel-title">Sinusoidal Wave Curves Across Token Positions</div>
+          <canvas id="pe-wave-canvas" height="210"></canvas>
+        </div>
+        <div class="pe-panel">
+          <div class="pe-panel-title">Positional Vector Heatmap (Position × Dimension)</div>
+          <div class="pe-heatmap" id="pe-heatmap"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5: Self-Attention & Softmax Generation -->
+    <section id="step-5" class="card glass-card">
+      <div class="card-header">
+        <div class="card-title-group">
+          <span class="step-badge">STEP 05</span>
+          <h2>Self-Attention &amp; Next-Token Softmax</h2>
+        </div>
+        <div class="header-metric metric-pill">Multi-Head Attention</div>
+      </div>
+
+      <p class="card-desc">
+        <strong>Self-Attention</strong> lets each token weigh how strongly it relates to every other token
+        in context. Select a query token below to inspect its attention distribution, then adjust
+        <strong>Temperature</strong> to see how Softmax shapes the next-token prediction.
+      </p>
+
+      <div class="attn-gen-grid">
+        <div class="attn-panel">
+          <div class="pe-panel-title">Query Token Attention Weights (Click a token)</div>
+          <div class="attn-tokens" id="attn-tokens"></div>
+          <div class="attn-bars" id="attn-bars"></div>
+        </div>
+
+        <div class="attn-panel">
+          <div class="gen-header">
+            <div class="pe-panel-title">Softmax Next-Token Probabilities</div>
+            <div class="temp-control">
+              <label for="temp-slider">Temp: <strong id="temp-val">0.8</strong></label>
+              <input type="range" id="temp-slider" min="0.1" max="2.0" step="0.1" value="0.8" />
+            </div>
+          </div>
+          <div class="softmax-list" id="softmax-list"></div>
+          <div class="gen-actions">
+            <button type="button" id="btn-append-token" class="btn btn-primary">
+              + Append Top Predicted Token
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>LLM Pipeline Explorer · Interactive Tokenization, 3D Embedding Projection &amp; Cosine Similarity</p>
+  </footer>
+
+  <div class="token-tooltip" id="token-tooltip" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
